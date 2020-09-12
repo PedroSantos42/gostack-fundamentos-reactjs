@@ -9,7 +9,6 @@ import api from '../../services/api';
 import Header from '../../components/Header';
 
 import formatValue from '../../utils/formatValue';
-import formatDate from '../../utils/formatDate';
 
 import { Container, CardContainer, Card, TableContainer } from './styles';
 
@@ -53,8 +52,14 @@ const Dashboard: React.FC = () => {
         },
       );
 
+      const newBalance: Balance = {
+        income: formatValue(response.data.balance.income),
+        outcome: formatValue(response.data.balance.outcome),
+        total: formatValue(response.data.balance.total),
+      };
+
       setTransactions(newTransactions);
-      setBalance(response.data.balance);
+      setBalance(newBalance);
     }
     loadTransactions();
   }, []);
@@ -86,7 +91,6 @@ const Dashboard: React.FC = () => {
             <h1 data-testid="balance-total">{balance.total}</h1>
           </Card>
         </CardContainer>
-
         <TableContainer>
           <table>
             <thead>
@@ -109,22 +113,8 @@ const Dashboard: React.FC = () => {
                   </td>
                   <td>{transaction.category}</td>
                   <td>{transaction.created_at}</td>
-                  {/* <td>{formatDate(transaction.created_at)}</td> */}
                 </tr>
               ))}
-
-              {/* <tr>
-                <td className="title">Computer</td>
-                <td className="income">R$ 5.000,00</td>
-                <td>Sell</td>
-                <td>20/04/2020</td>
-              </tr>
-              <tr>
-                <td className="title">Website Hosting</td>
-                <td className="outcome">- R$ 1.000,00</td>
-                <td>Hosting</td>
-                <td>19/04/2020</td>
-              </tr> */}
             </tbody>
           </table>
         </TableContainer>
